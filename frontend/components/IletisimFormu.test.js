@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import userEvent from "@testing-library/user-event";
 import IletisimFormu from "./IletisimFormu";
@@ -30,7 +30,14 @@ test("kullanıcı adını 5 karakterden az girdiğinde BİR hata mesajı render 
   expect(errorMessages).toHaveLength(1);
 });
 
-test("kullanıcı inputları doldurmadığında ÜÇ hata mesajı render ediliyor.", async () => {});
+test("kullanıcı inputları doldurmadığında ÜÇ hata mesajı render ediliyor.", async () => {
+  //act
+  const button = screen.getByRole("button");
+  userEvent.click(button);
+  const errorMessages = await screen.findAllByTestId("error");
+  //assert
+  expect(errorMessages).toHaveLength(3);
+});
 
 test("kullanıcı doğru ad ve soyad girdiğinde ama email girmediğinde BİR hata mesajı render ediliyor.", async () => {});
 
