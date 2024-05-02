@@ -4,13 +4,15 @@ import "@testing-library/jest-dom/extend-expect";
 import userEvent from "@testing-library/user-event";
 import IletisimFormu from "./IletisimFormu";
 
+beforeEach(() => {
+  //arrange
+  render(<IletisimFormu />);
+});
 test("hata olmadan render ediliyor", () => {
   render(<IletisimFormu />);
 });
 
 test("iletişim formu headerı render ediliyor", () => {
-  //arrange
-  render(<IletisimFormu />);
   //act
   const heading = screen.getByRole("heading", { level: 1 });
   //assert
