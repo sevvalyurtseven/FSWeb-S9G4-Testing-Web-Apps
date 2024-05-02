@@ -21,7 +21,14 @@ test("iletişim formu headerı render ediliyor", () => {
   expect(heading).toHaveTextContent("İletişim Formu");
 });
 
-test("kullanıcı adını 5 karakterden az girdiğinde BİR hata mesajı render ediyor.", async () => {});
+test("kullanıcı adını 5 karakterden az girdiğinde BİR hata mesajı render ediyor.", async () => {
+  //act
+  const firstName = screen.getByLabelText("Ad*");
+  userEvent.type(firstName, "abcd");
+  const errorMessages = await screen.findAllByTestId("error");
+  //assert
+  expect(errorMessages).toHaveLength(1);
+});
 
 test("kullanıcı inputları doldurmadığında ÜÇ hata mesajı render ediliyor.", async () => {});
 
