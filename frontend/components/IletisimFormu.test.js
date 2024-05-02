@@ -57,7 +57,16 @@ test("kullanıcı doğru ad ve soyad girdiğinde ama email girmediğinde BİR ha
   expect(errorMessages).toHaveLength(1);
 });
 
-test('geçersiz bir mail girildiğinde "email geçerli bir email adresi olmalıdır." hata mesajı render ediliyor', async () => {});
+test('geçersiz bir mail girildiğinde "email geçerli bir email adresi olmalıdır." hata mesajı render ediliyor', async () => {
+  //act
+  const email = screen.getByLabelText("Email*");
+  userEvent.type(email, "test");
+  const errorMessage = await screen.findByTestId("error");
+  //assert
+  expect(errorMessage).toHaveTextContent(
+    "email geçerli bir email adresi olmalıdır."
+  );
+});
 
 test('soyad girilmeden gönderilirse "soyad gereklidir." mesajı render ediliyor', async () => {});
 
