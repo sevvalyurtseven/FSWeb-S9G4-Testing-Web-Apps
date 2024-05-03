@@ -78,7 +78,7 @@ test('soyad girilmeden gönderilirse "soyad gereklidir." mesajı render ediliyor
   //act
   const button = screen.getByRole("button");
   userEvent.click(button);
-  const errorMessage = await screen.findByText(/soyad gereklidir./i);
+  const errorMessage = await screen.findByText(/haTa: soyad gereklidir./i);
   //assert
   expect(errorMessage).toBeInTheDocument();
 });
@@ -137,5 +137,10 @@ test("form gönderildiğinde girilen tüm değerler render ediliyor.", async () 
     expect(soyad).toHaveTextContent("Soyad: efghj");
     expect(email).toHaveTextContent("Email: test@test.com");
     expect(mesaj).toHaveTextContent("Mesaj: test");
+
+    expect(isim).toBeInTheDocument();
+    expect(soyad).toBeInTheDocument();
+    expect(email).toBeInTheDocument();
+    expect(mesaj).toBeInTheDocument();
   });
 });
