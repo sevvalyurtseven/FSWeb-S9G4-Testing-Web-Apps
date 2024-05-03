@@ -1,14 +1,15 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import userEvent from "@testing-library/user-event";
 import IletisimFormu from "./IletisimFormu";
 
-beforeEach(() => {
-  //arrange
+test("hata olmadan render ediliyor", () => {
   render(<IletisimFormu />);
 });
-test("hata olmadan render ediliyor", () => {
+
+beforeEach(() => {
+  //arrange
   render(<IletisimFormu />);
 });
 
@@ -22,6 +23,11 @@ test("iletişim formu headerı render ediliyor", () => {
 });
 
 test("kullanıcı adını 5 karakterden az girdiğinde BİR hata mesajı render ediyor.", async () => {
+  //kullanıcı adı alanını seç
+  //kullanıcı adı alanına 4 karakter gir
+  //ekrandan hata mesajlarını ara
+  //hata mesajının 1 tane oldugunu doğrula
+
   //act
   const firstName = screen.getByLabelText("Ad*");
   userEvent.type(firstName, "abcd");
@@ -77,6 +83,30 @@ test('soyad girilmeden gönderilirse "soyad gereklidir." mesajı render ediliyor
   expect(errorMessage).toBeInTheDocument();
 });
 
-test("ad,soyad, email render ediliyor. mesaj bölümü doldurulmadığında hata mesajı render edilmiyor.", async () => {});
+test("ad,soyad, email render ediliyor. mesaj bölümü doldurulmadığında hata mesajı render edilmiyor.", async () => {
+  //ilgili alanları bul
+
+  const firstName = screen.getByLabelText("Ad*");
+  const lastName = screen.getByLabelText("Soyad*");
+  const email = screen.getByLabelText("Email*");
+
+  //ilgili alanları dogru doldur
+
+  userEvent.type(firstName, "abcde");
+  userEvent.type(lastName, "efghj");
+  userEvent.type(email, "test@test.com");
+
+  //butona tıkla
+
+  const button = screen.getByRole("button");
+  userEvent.click(button);
+
+  //render edilen hatayı ara
+  await waitFor(() => {
+    const errorMessages = screen.queryAllByTestId("error");
+    //hata mesajlarının 0 tane oldugunu dogrula
+    expect(errorMessages).toHaveLength(0);
+  });
+});
 
 test("form gönderildiğinde girilen tüm değerler render ediliyor.", async () => {});
