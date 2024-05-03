@@ -109,4 +109,33 @@ test("ad,soyad, email render ediliyor. mesaj bölümü doldurulmadığında hata
   });
 });
 
-test("form gönderildiğinde girilen tüm değerler render ediliyor.", async () => {});
+test("form gönderildiğinde girilen tüm değerler render ediliyor.", async () => {
+  const firstName = screen.getByLabelText("Ad*");
+  const lastName = screen.getByLabelText("Soyad*");
+  const email = screen.getByLabelText("Email*");
+  const mesaj = screen.getByLabelText("Mesaj");
+
+  userEvent.type(firstName, "abcde");
+  userEvent.type(lastName, "efghj");
+  userEvent.type(email, "test@test.com");
+  userEvent.type(mesaj, "test");
+
+  //formu gonder
+
+  const button = screen.getByRole("button");
+  userEvent.click(button);
+
+  //render edilen degerleri ara
+
+  await waitFor(() => {
+    const isim = screen.queryByTestId("firstnameDisplay");
+    const soyad = screen.queryByTestId("lastnameDisplay");
+    const email = screen.queryByTestId("emailDisplay");
+    const mesaj = screen.queryByTestId("messageDisplay");
+
+    expect(isim).toHaveTextContent("Ad: abcde");
+    expect(soyad).toHaveTextContent("Soyad: efghj");
+    expect(email).toHaveTextContent("Email: test@test.com");
+    expect(mesaj).toHaveTextContent("Mesaj: test");
+  });
+});
